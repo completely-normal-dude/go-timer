@@ -72,7 +72,6 @@ func getAverage(ao uint8, solves []string) (result string) {
 }
 
 func startTimer(f bool) {
-	var a uint8 = 0
 	switch f {
 	case true:
 		go func() {
@@ -83,7 +82,6 @@ func startTimer(f bool) {
 				case <-ch:
 					return
 				default:
-					a++
 					seconds += 0.01
 					t := strconv.FormatFloat(seconds, 'f', 2, 64)
 					timer.SetText(t)
