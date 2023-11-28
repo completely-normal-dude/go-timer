@@ -47,7 +47,7 @@ func getAverage(ao uint8, solves []string) (result string) {
 				a, _ := strconv.ParseFloat(solves[i], 64)
 				number += a
 				if i == 49 {
-					result = "Ao50" + strconv.FormatFloat(number/50, 'f', 2, 64)
+					result = "Ao50 " + strconv.FormatFloat(number/50, 'f', 2, 64)
 					return result
 				}
 			}
@@ -60,7 +60,7 @@ func getAverage(ao uint8, solves []string) (result string) {
 				a, _ := strconv.ParseFloat(solves[i], 64)
 				number += a
 				if i == 99 {
-					result = "Ao100" + strconv.FormatFloat(number/100, 'f', 2, 64)
+					result = "Ao100 " + strconv.FormatFloat(number/100, 'f', 2, 64)
 					return result
 				}
 			}

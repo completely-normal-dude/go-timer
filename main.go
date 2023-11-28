@@ -21,7 +21,7 @@ var (
 func main() {
 	go handleErrors() // errors.go
 	a := app.New()
-	w := a.NewWindow("ThisFloating")
+	w := a.NewWindow("GoTime")
 	go setkeys(w)     // keys.go
 	tabs := setTabs() // tabs.go
 	w.Resize(fyne.NewSize(400, 500))
