@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/widget"
 	"github.com/robertkrimen/otto"
 	"os"
 	"slices"
@@ -102,6 +100,7 @@ func startTimer(f bool) {
 		timer.SetText(t)
 		data, _ := os.ReadFile(timesPath)
 		fmtdata := string(data)
+		timesSaved = true
 		if fmtdata == "" {
 			fmt.Fprintf(timesFile, "%s", t)
 			fmt.Printf("Saved %s!\n", t)
@@ -119,7 +118,7 @@ func manageFile() []string {
 	return content
 }
 
-func getScramble() fyne.CanvasObject {
+func getScramble() string {
 	vm := otto.New()
 	vm.Run(`Array.prototype.choose = function() {
 		var index = Math.floor(Math.random() * this.length);
@@ -183,7 +182,9 @@ var scramble = scramble(20);
 		`)
 	value, _ := vm.Get("scramble")
 	text, _ := value.ToString()
-	label := widget.NewLabel(text)
-	label.Alignment = fyne.TextAlignCenter
-	return widget.NewLabel(text)
+	// data := binding.NewString()
+	// data.Set(text)
+	// label := widget.NewLabelWithData(data)
+	// label.Alignment = fyne.TextAlignCenter
+	return text
 }

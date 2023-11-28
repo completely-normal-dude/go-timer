@@ -15,6 +15,7 @@ var (
 	timesPath         = configdir + string(os.PathSeparator) + "times"
 	timesFile, error2 = os.OpenFile(timesPath, os.O_APPEND|os.O_RDWR, 0644)
 	ch                = make(chan bool)
+	timesSaved        = true
 )
 
 func main() {

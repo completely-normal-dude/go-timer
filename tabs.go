@@ -31,11 +31,11 @@ func timerTab() fyne.CanvasObject {
 			ao12.Set(getAverage(12, manageFile()))
 			ao50.Set(getAverage(50, manageFile()))
 			ao100.Set(getAverage(100, manageFile()))
-			time.Sleep(time.Second * 2)
+			time.Sleep(time.Second)
 		}
 	}()
 	time.Sleep(time.Millisecond * 500)
-	return container.New(layout.NewGridLayoutWithRows(3), container.NewCenter(gen_scramble_tab()), container.NewCenter(timer), container.NewGridWithRows(4, gen_avg_tab(5, ao5), gen_avg_tab(12, ao12), gen_avg_tab(50, ao50), gen_avg_tab(100, ao100)))
+	return container.New(layout.NewGridLayoutWithRows(3), container.NewCenter(gen_scramble_cont()), container.NewCenter(timer), container.NewGridWithRows(4, gen_avg_cont(5, ao5), gen_avg_cont(12, ao12), gen_avg_cont(50, ao50), gen_avg_cont(100, ao100)))
 }
 
 func solvesTab() fyne.CanvasObject {
@@ -52,11 +52,10 @@ func solvesTab() fyne.CanvasObject {
 }
 
 func statsTab() fyne.CanvasObject {
-	// content := widget.NewLabel("Your stats should be here")
 	return widget.NewLabel("Your stats should be here")
 }
 
-func gen_avg_tab(num uint8, data binding.String) fyne.CanvasObject {
+func gen_avg_cont(num uint8, data binding.String) fyne.CanvasObject {
 	switch num {
 	case 5:
 		widget := widget.NewLabelWithData(data)
@@ -83,7 +82,17 @@ func gen_avg_tab(num uint8, data binding.String) fyne.CanvasObject {
 	return widget
 }
 
-func gen_scramble_tab() fyne.CanvasObject {
-	scramble := getScramble()
-	return scramble
+func gen_scramble_cont() fyne.CanvasObject {
+	data := binding.NewString()
+	go func() {
+		for true {
+			if timesSaved == true {
+				data.Set(getScramble())
+				timesSaved = false
+			}
+			time.Sleep(time.Millisecond * 500)
+		}
+	}()
+	wid := widget.NewLabelWithData(data)
+	return wid
 }
