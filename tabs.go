@@ -31,7 +31,7 @@ func timerTab() fyne.CanvasObject {
 			ao12.Set(getAverage(12, manageFile()))
 			ao50.Set(getAverage(50, manageFile()))
 			ao100.Set(getAverage(100, manageFile()))
-			time.Sleep(3)
+			time.Sleep(time.Second * 2)
 		}
 	}()
 	time.Sleep(time.Millisecond * 500)
