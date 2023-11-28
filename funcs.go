@@ -2,15 +2,14 @@ package main
 
 import (
 	"fmt"
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/widget"
+	"github.com/robertkrimen/otto"
 	"os"
 	"slices"
 	"strconv"
 	"strings"
 	"time"
-
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/widget"
-	"github.com/robertkrimen/otto"
 )
 
 func getAverage(ao uint8, solves []string) (result string) {
@@ -23,7 +22,7 @@ func getAverage(ao uint8, solves []string) (result string) {
 				number += a
 				if i == 4 {
 					result = "Ao5 " + strconv.FormatFloat(number/5, 'f', 2, 64)
-					break
+					return result
 				}
 			}
 		} else {
@@ -37,7 +36,7 @@ func getAverage(ao uint8, solves []string) (result string) {
 				number += a
 				if i == 11 {
 					result = "Ao12 " + strconv.FormatFloat(number/12, 'f', 2, 64)
-					break
+					return result
 				}
 			}
 		} else {
@@ -51,7 +50,7 @@ func getAverage(ao uint8, solves []string) (result string) {
 				number += a
 				if i == 49 {
 					result = "Ao50" + strconv.FormatFloat(number/50, 'f', 2, 64)
-					break
+					return result
 				}
 			}
 		} else {
@@ -64,7 +63,7 @@ func getAverage(ao uint8, solves []string) (result string) {
 				number += a
 				if i == 99 {
 					result = "Ao100" + strconv.FormatFloat(number/100, 'f', 2, 64)
-					break
+					return result
 				}
 			}
 		} else {
@@ -120,7 +119,7 @@ func manageFile() []string {
 	return content
 }
 
-func getScramble() string {
+func getScramble() fyne.CanvasObject {
 	vm := otto.New()
 	vm.Run(`Array.prototype.choose = function() {
 		var index = Math.floor(Math.random() * this.length);
@@ -184,32 +183,7 @@ var scramble = scramble(20);
 		`)
 	value, _ := vm.Get("scramble")
 	text, _ := value.ToString()
-	return text
-}
-
-func gen_avg_tab(num uint8) fyne.CanvasObject {
-	switch num {
-	case 5:
-		widget := widget.NewLabel(getAverage(num, manageFile()))
-		widget.TextStyle.Bold = true
-		widget.Alignment = fyne.TextAlignTrailing
-		return widget
-	case 12:
-		widget := widget.NewLabel(getAverage(num, manageFile()))
-		widget.TextStyle.Bold = true
-		widget.Alignment = fyne.TextAlignTrailing
-		return widget
-	case 50:
-		widget := widget.NewLabel(getAverage(num, manageFile()))
-		widget.TextStyle.Bold = true
-		widget.Alignment = fyne.TextAlignTrailing
-		return widget
-	case 100:
-		widget := widget.NewLabel(getAverage(num, manageFile()))
-		widget.TextStyle.Bold = true
-		widget.Alignment = fyne.TextAlignTrailing
-		return widget
-	}
-	var widget fyne.CanvasObject
-	return widget
+	label := widget.NewLabel(text)
+	label.Alignment = fyne.TextAlignCenter
+	return widget.NewLabel(text)
 }
