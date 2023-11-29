@@ -9,7 +9,7 @@ import (
 
 var (
 	seconds               = 0.000
-	timer                 = widget.NewLabel("0.00")
+	timer                 = widget.NewLabel("0.0")
 	timerRunning          = false
 	configdir, error1     = os.UserConfigDir()
 	timesPath             = configdir + string(os.PathSeparator) + "times"
