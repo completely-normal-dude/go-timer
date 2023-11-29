@@ -8,14 +8,17 @@ import (
 )
 
 var (
-	seconds           = 0.000
-	timer             = widget.NewLabel("0.00")
-	timerRunning      = false
-	configdir, error1 = os.UserConfigDir()
-	timesPath         = configdir + string(os.PathSeparator) + "times"
-	timesFile, error2 = os.OpenFile(timesPath, os.O_APPEND|os.O_RDWR, 0644)
-	ch                = make(chan bool)
-	timesSaved        = true
+	seconds               = 0.000
+	timer                 = widget.NewLabel("0.00")
+	timerRunning          = false
+	configdir, error1     = os.UserConfigDir()
+	timesPath             = configdir + string(os.PathSeparator) + "times"
+	scramblesPath         = configdir + string(os.PathSeparator) + "scrambles"
+	timesFile, error2     = os.OpenFile(timesPath, os.O_APPEND|os.O_RDWR, 0644)
+	scramblesFile, error0 = os.OpenFile(scramblesPath, os.O_APPEND|os.O_RDWR, 0644)
+	ch                    = make(chan bool)
+	timesSaved            = true
+	currentScramble       string
 )
 
 func main() {
@@ -24,8 +27,9 @@ func main() {
 	w := a.NewWindow("GoTime")
 	go setkeys(w)     // keys.go
 	tabs := setTabs() // tabs.go
-	w.Resize(fyne.NewSize(400, 500))
+	w.Resize(fyne.NewSize(600, 500))
 	w.SetContent(tabs)
 	w.ShowAndRun()
 	defer timesFile.Close()
+	defer scramblesFile.Close()
 }

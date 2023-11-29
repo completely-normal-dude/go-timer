@@ -13,8 +13,8 @@ import (
 func setTabs() *container.AppTabs {
 	tabs := container.NewAppTabs(
 		container.NewTabItem("Timer", container.NewVBox(timerTab())),
-		container.NewTabItem("Solves", container.NewPadded(solvesTab())),
-		container.NewTabItem("Stats", container.NewCenter(statsTab())),
+		container.NewTabItem("Solves", container.NewStack(solvesTab())),
+		// container.NewTabItem("Stats", container.NewCenter(statsTab())),
 	)
 	return tabs
 }
@@ -27,10 +27,10 @@ func timerTab() fyne.CanvasObject {
 	ao100 := binding.NewString()
 	go func() {
 		for true {
-			ao5.Set(getAverage(5, manageFile()))
-			ao12.Set(getAverage(12, manageFile()))
-			ao50.Set(getAverage(50, manageFile()))
-			ao100.Set(getAverage(100, manageFile()))
+			ao5.Set(getAverage(5, readTimes()))
+			ao12.Set(getAverage(12, readTimes()))
+			ao50.Set(getAverage(50, readTimes()))
+			ao100.Set(getAverage(100, readTimes()))
 			time.Sleep(time.Second)
 		}
 	}()
@@ -39,21 +39,36 @@ func timerTab() fyne.CanvasObject {
 }
 
 func solvesTab() fyne.CanvasObject {
-	return widget.NewList(
+	list1 := widget.NewList(
 		func() int {
-			return len(manageFile())
+			return len(readTimes())
 		},
 		func() fyne.CanvasObject {
 			return widget.NewLabel("Solves")
 		},
 		func(i widget.ListItemID, o fyne.CanvasObject) {
-			o.(*widget.Label).SetText(manageFile()[i])
+			o.(*widget.Label).SetText(readTimes()[i])
 		})
+	list2 := widget.NewList(
+		func() int {
+			return len(readScrambles())
+		},
+		func() fyne.CanvasObject {
+			return widget.NewLabel("Solves")
+		},
+		func(i widget.ListItemID, o fyne.CanvasObject) {
+			o.(*widget.Label).SetText(readScrambles()[i])
+		})
+	cont1 := container.NewHBox(list1)
+	cont2 := container.NewStack(list2)
+	cont := container.NewHSplit(cont1, cont2)
+	cont.SetOffset(0.0)
+	return cont
 }
 
-func statsTab() fyne.CanvasObject {
-	return widget.NewLabel("Your stats should be here")
-}
+// func statsTab() fyne.CanvasObject {
+// 	return widget.NewLabel("Your stats should be here")
+// }
 
 func gen_avg_cont(num uint8, data binding.String) fyne.CanvasObject {
 	switch num {
@@ -87,7 +102,9 @@ func gen_scramble_cont() fyne.CanvasObject {
 	go func() {
 		for true {
 			if timesSaved == true {
-				data.Set(getScramble())
+				scr := getScramble()
+				data.Set(scr)
+				currentScramble = scr
 				timesSaved = false
 			}
 			time.Sleep(time.Millisecond * 500)

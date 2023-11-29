@@ -14,4 +14,11 @@ func handleErrors() {
 	} else {
 		fmt.Println("Found", timesPath)
 	}
+	if error0 != nil {
+		fmt.Println(scramblesPath, "not found!\nCreating file...")
+		os.Create(scramblesPath)
+		scramblesFile, _ = os.OpenFile(scramblesPath, os.O_APPEND|os.O_RDWR, 0644)
+	} else {
+		fmt.Println("Found", scramblesPath)
+	}
 }

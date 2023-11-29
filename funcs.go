@@ -98,18 +98,29 @@ func startTimer(f bool) {
 		timer.SetText(t)
 		data, _ := os.ReadFile(timesPath)
 		fmtdata := string(data)
+		data1, _ := os.ReadFile(timesPath)
+		fmtdata1 := string(data1)
 		timesSaved = true
-		if fmtdata == "" {
+		if fmtdata == "" && fmtdata1 == "" {
 			fmt.Fprintf(timesFile, "%s", t)
+			fmt.Fprintf(scramblesFile, "%s", currentScramble)
 			fmt.Printf("Saved %s!\n", t)
 		} else {
 			fmt.Fprintf(timesFile, "\n%s", t)
+			fmt.Fprintf(scramblesFile, "\n%s", currentScramble)
 			fmt.Printf("Saved %s!\n", t)
 		}
 	}
 }
-func manageFile() []string {
+func readTimes() []string {
 	data, _ := os.ReadFile(timesPath)
+	fmtdata := string(data)
+	content := strings.Split(fmtdata, "\n")
+	slices.Reverse(content)
+	return content
+}
+func readScrambles() []string {
+	data, _ := os.ReadFile(scramblesPath)
 	fmtdata := string(data)
 	content := strings.Split(fmtdata, "\n")
 	slices.Reverse(content)
@@ -180,9 +191,5 @@ var scramble = scramble(20);
 		`)
 	value, _ := vm.Get("scramble")
 	text, _ := value.ToString()
-	// data := binding.NewString()
-	// data.Set(text)
-	// label := widget.NewLabelWithData(data)
-	// label.Alignment = fyne.TextAlignCenter
 	return text
 }
