@@ -135,7 +135,6 @@ func getScramble() string {
 };
 
 function scramble(length) {
-		// generate map of planes associated with each side
 		var planes = {x: ['L', 'R'], y: ['U', 'D'], z: ['F', 'B']};
 		var planeMap = {};
 		for (var plane in planes) {
@@ -148,9 +147,6 @@ function scramble(length) {
 
 		var sides = ['F', 'B', 'R', 'L', 'U', 'D'];
 		var modifiers = ['2', '\'', ''];
-
-		// create buffer of moved sides
-		// once plane crossed, move on those sides is then permittalbe again
 
 		var weakBuffer = [], moves = [];
 		for (var i = 0; i < length; i++) {
@@ -167,7 +163,7 @@ function scramble(length) {
 				side = newSides.choose();
 
 				if (planeMap[side] != planeMap[badSide]) {
-					weakBuffer = []; // planes have been crossed
+					weakBuffer = []; 
 				}
 			}
 			else {
