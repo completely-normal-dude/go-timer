@@ -15,11 +15,14 @@ func getAverage(ao uint8, solves []string) (result string) {
 	switch ao {
 	case 5:
 		if len(solves) >= 5 {
-			for i := 0; i < 5; i++ {
-				a, _ := strconv.ParseFloat(solves[i], 64)
+			slice1 := solves[0:5]
+			slices.Sort(slice1)
+			solvesSlice := slice1[1:4]
+			for i := 0; i < 3; i++ {
+				a, _ := strconv.ParseFloat(solvesSlice[i], 64)
 				number += a
-				if i == 4 {
-					result = "Ao5 " + strconv.FormatFloat(number/5, 'f', 2, 64)
+				if i == 2 {
+					result = "Ao5 " + strconv.FormatFloat(number/3, 'f', 2, 64)
 					return result
 				}
 			}
@@ -29,11 +32,14 @@ func getAverage(ao uint8, solves []string) (result string) {
 
 	case 12:
 		if len(solves) >= 12 {
-			for i := 0; i < 12; i++ {
-				a, _ := strconv.ParseFloat(solves[i], 64)
+			slice1 := solves[0:12]
+			slices.Sort(slice1)
+			solvesSlice := slice1[1:11]
+			for i := 0; i < 10; i++ {
+				a, _ := strconv.ParseFloat(solvesSlice[i], 64)
 				number += a
-				if i == 11 {
-					result = "Ao12 " + strconv.FormatFloat(number/12, 'f', 2, 64)
+				if i == 9 {
+					result = "Ao12 " + strconv.FormatFloat(number/10, 'f', 2, 64)
 					return result
 				}
 			}
@@ -43,11 +49,14 @@ func getAverage(ao uint8, solves []string) (result string) {
 
 	case 50:
 		if len(solves) >= 50 {
-			for i := 0; i < 50; i++ {
-				a, _ := strconv.ParseFloat(solves[i], 64)
+			slice1 := solves[0:50]
+			slices.Sort(slice1)
+			solvesSlice := slice1[1:49]
+			for i := 0; i < 48; i++ {
+				a, _ := strconv.ParseFloat(solvesSlice[i], 64)
 				number += a
-				if i == 49 {
-					result = "Ao50 " + strconv.FormatFloat(number/50, 'f', 2, 64)
+				if i == 47 {
+					result = "Ao50 " + strconv.FormatFloat(number/48, 'f', 2, 64)
 					return result
 				}
 			}
@@ -56,11 +65,14 @@ func getAverage(ao uint8, solves []string) (result string) {
 		}
 	case 100:
 		if len(solves) >= 100 {
-			for i := 0; i < 100; i++ {
-				a, _ := strconv.ParseFloat(solves[i], 64)
+			slice1 := solves[0:100]
+			slices.Sort(slice1)
+			solvesSlice := slice1[1:99]
+			for i := 0; i < 98; i++ {
+				a, _ := strconv.ParseFloat(solvesSlice[i], 64)
 				number += a
-				if i == 99 {
-					result = "Ao100 " + strconv.FormatFloat(number/100, 'f', 2, 64)
+				if i == 97 {
+					result = "Ao100 " + strconv.FormatFloat(number/98, 'f', 2, 64)
 					return result
 				}
 			}
@@ -103,17 +115,27 @@ func startTimer(f bool) {
 		timer.SetText(t)
 		data, _ := os.ReadFile(timesPath)
 		fmtdata := string(data)
-		data1, _ := os.ReadFile(timesPath)
-		fmtdata1 := string(data1)
 		timesSaved = true
-		if fmtdata == "" && fmtdata1 == "" {
-			fmt.Fprintf(timesFile, "%s", t)
-			fmt.Fprintf(scramblesFile, "%s", currentScramble)
-			fmt.Printf("Saved %s!\n", t)
+		if fmtdata == "" {
+			if solve < 10 {
+				fmt.Fprintf(timesFile, "0%s", t)
+				fmt.Fprintf(scramblesFile, "%s", currentScramble)
+				fmt.Printf("Saved 0%s!\n", t)
+			} else {
+				fmt.Fprintf(timesFile, "%s", t)
+				fmt.Fprintf(scramblesFile, "%s", currentScramble)
+				fmt.Printf("Saved %s!\n", t)
+			}
 		} else {
-			fmt.Fprintf(timesFile, "\n%s", t)
-			fmt.Fprintf(scramblesFile, "\n%s", currentScramble)
-			fmt.Printf("Saved %s!\n", t)
+			if solve < 10 {
+				fmt.Fprintf(timesFile, "\n0%s", t)
+				fmt.Fprintf(scramblesFile, "\n%s", currentScramble)
+				fmt.Printf("Saved 0%s!\n", t)
+			} else {
+				fmt.Fprintf(timesFile, "\n%s", t)
+				fmt.Fprintf(scramblesFile, "\n%s", currentScramble)
+				fmt.Printf("Saved %s!\n", t)
+			}
 		}
 	}
 }
