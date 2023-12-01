@@ -27,7 +27,7 @@ func getAverage(ao uint8, solves []string) (result string) {
 				}
 			}
 		} else {
-			result = "Ao5  -"
+			result = "Ao5   -"
 		}
 
 	case 12:
@@ -44,7 +44,7 @@ func getAverage(ao uint8, solves []string) (result string) {
 				}
 			}
 		} else {
-			result = "Ao12  -"
+			result = "Ao12   -"
 		}
 
 	case 50:
@@ -61,7 +61,7 @@ func getAverage(ao uint8, solves []string) (result string) {
 				}
 			}
 		} else {
-			result = "Ao50  -"
+			result = "Ao50   -"
 		}
 	case 100:
 		if len(solves) >= 100 {
@@ -77,7 +77,7 @@ func getAverage(ao uint8, solves []string) (result string) {
 				}
 			}
 		} else {
-			result = "Ao100  -"
+			result = "Ao100   -"
 		}
 	}
 	return result
