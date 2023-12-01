@@ -2,11 +2,11 @@
 A very lightweight 3x3x3 cube timer written in Go and built with Fyne GUI toolkit
 ### Current features
 - Save times with their scramble
-- Calculate average from last 5/12/50/100 solves
-- Generate new scrambles once solve has finished
+- Calculate average from last 5/12/50/100 solves excluding best and worst time
+- Generate scrambles 
 ### Notes
 - This is in a very early state, don't expect many features!
-- Even though this app is compatible with Windows and seemingly works, seconds are not measured precisely at all (I don't know the reason). Works flawlessly on Linux. Not tested in MacOS
+- Don't compile this if using Windows, use the release binaries instead. There are some changes made to the release binary that makes the timer work correctly in Windows
 - Scrambles are generated using ![this](https://github.com/alexcoplan/scrambler) project 
 # Screenshots
 ![shot1](assets/shot1.png)
