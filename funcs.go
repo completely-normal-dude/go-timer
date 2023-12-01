@@ -91,12 +91,16 @@ func startTimer(f bool) {
 			timerRunning = true
 			fmt.Printf("Timer started... ")
 			for range time.Tick(10 * time.Millisecond) {
+				// for range time.Tick(100 * time.Millisecond) {
 				select {
 				case <-ch:
 					return
 				default:
+					// seconds += 0.1
+					// t := strconv.FormatFloat(seconds, 'f', 1, 64)
+					// timer.SetText(t)
 					a++
-					seconds += 0.01
+					seconds += 0.1
 					if a == 10 {
 						t := strconv.FormatFloat(seconds, 'f', 1, 64)
 						timer.SetText(t)

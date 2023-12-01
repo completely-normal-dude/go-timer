@@ -26,7 +26,7 @@ func timerTab() fyne.CanvasObject {
 	ao50 := binding.NewString()
 	ao100 := binding.NewString()
 	go func() {
-		for true {
+		for {
 			ao5.Set(getAverage(5, readTimes()))
 			ao12.Set(getAverage(12, readTimes()))
 			ao50.Set(getAverage(50, readTimes()))
@@ -100,8 +100,8 @@ func gen_avg_cont(num uint8, data binding.String) fyne.CanvasObject {
 func gen_scramble_cont() fyne.CanvasObject {
 	data := binding.NewString()
 	go func() {
-		for true {
-			if timesSaved == true {
+		for {
+			if timesSaved {
 				scr := getScramble()
 				data.Set(scr)
 				currentScramble = scr

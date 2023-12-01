@@ -6,7 +6,7 @@ func setkeys(win fyne.Window) {
 	win.Canvas().SetOnTypedKey(func(key *fyne.KeyEvent) {
 		switch key.Name {
 		case fyne.KeySpace:
-			if timerRunning == false {
+			if !timerRunning {
 				startTimer(true)
 			} else {
 				startTimer(false)
