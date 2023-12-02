@@ -25,8 +25,8 @@ func main() {
 	go handleErrors() // errors.go
 	a := app.New()
 	w := a.NewWindow("GoTime")
-	go setkeys(w)     // keys.go
-	tabs := setTabs() // tabs.go
+	tabs := setTabs()   // tabs.go
+	go setkeys(w, tabs) // keys.go
 	w.Resize(fyne.NewSize(600, 500))
 	w.SetContent(tabs)
 	w.ShowAndRun()

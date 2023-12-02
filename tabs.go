@@ -25,17 +25,19 @@ func timerTab() fyne.CanvasObject {
 	ao12 := binding.NewString()
 	ao50 := binding.NewString()
 	ao100 := binding.NewString()
+	aoAll := binding.NewString()
 	go func() {
 		for {
 			ao5.Set(getAverage(5, readTimes()))
 			ao12.Set(getAverage(12, readTimes()))
 			ao50.Set(getAverage(50, readTimes()))
 			ao100.Set(getAverage(100, readTimes()))
+			aoAll.Set(getAverage(0, readTimes()))
 			time.Sleep(time.Second)
 		}
 	}()
 	time.Sleep(time.Millisecond * 500)
-	return container.New(layout.NewGridLayoutWithRows(3), container.NewCenter(gen_scramble_cont()), container.NewCenter(timer), container.NewGridWithRows(4, gen_avg_cont(5, ao5), gen_avg_cont(12, ao12), gen_avg_cont(50, ao50), gen_avg_cont(100, ao100)))
+	return container.New(layout.NewGridLayoutWithRows(3), container.NewCenter(gen_scramble_cont()), container.NewCenter(timer), container.NewGridWithRows(5, gen_avg_cont(5, ao5), gen_avg_cont(12, ao12), gen_avg_cont(50, ao50), gen_avg_cont(100, ao100), gen_avg_cont(0, aoAll)))
 }
 
 func solvesTab() fyne.CanvasObject {
@@ -88,6 +90,11 @@ func gen_avg_cont(num uint8, data binding.String) fyne.CanvasObject {
 		widget.Alignment = fyne.TextAlignTrailing
 		return widget
 	case 100:
+		widget := widget.NewLabelWithData(data)
+		widget.TextStyle.Bold = true
+		widget.Alignment = fyne.TextAlignTrailing
+		return widget
+	case 0:
 		widget := widget.NewLabelWithData(data)
 		widget.TextStyle.Bold = true
 		widget.Alignment = fyne.TextAlignTrailing

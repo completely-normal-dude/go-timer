@@ -1,15 +1,20 @@
 package main
 
-import "fyne.io/fyne/v2"
+import (
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/container"
+)
 
-func setkeys(win fyne.Window) {
+func setkeys(win fyne.Window, tabs *container.AppTabs) {
 	win.Canvas().SetOnTypedKey(func(key *fyne.KeyEvent) {
-		switch key.Name {
-		case fyne.KeySpace:
-			if !timerRunning {
-				startTimer(true)
-			} else {
-				startTimer(false)
+		if tabs.SelectedIndex() == 0 {
+			switch key.Name {
+			case fyne.KeySpace:
+				if !timerRunning {
+					startTimer(true)
+				} else {
+					startTimer(false)
+				}
 			}
 		}
 	})

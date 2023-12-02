@@ -22,7 +22,7 @@ func getAverage(ao uint8, solves []string) (result string) {
 				a, _ := strconv.ParseFloat(solvesSlice[i], 64)
 				number += a
 				if i == 2 {
-					result = "Ao5 " + strconv.FormatFloat(number/3, 'f', 2, 64)
+					result = "Ao5  " + strconv.FormatFloat(number/3, 'f', 2, 64)
 					return result
 				}
 			}
@@ -39,7 +39,7 @@ func getAverage(ao uint8, solves []string) (result string) {
 				a, _ := strconv.ParseFloat(solvesSlice[i], 64)
 				number += a
 				if i == 9 {
-					result = "Ao12 " + strconv.FormatFloat(number/10, 'f', 2, 64)
+					result = "Ao12  " + strconv.FormatFloat(number/10, 'f', 2, 64)
 					return result
 				}
 			}
@@ -56,7 +56,7 @@ func getAverage(ao uint8, solves []string) (result string) {
 				a, _ := strconv.ParseFloat(solvesSlice[i], 64)
 				number += a
 				if i == 47 {
-					result = "Ao50 " + strconv.FormatFloat(number/48, 'f', 2, 64)
+					result = "Ao50  " + strconv.FormatFloat(number/48, 'f', 2, 64)
 					return result
 				}
 			}
@@ -72,12 +72,29 @@ func getAverage(ao uint8, solves []string) (result string) {
 				a, _ := strconv.ParseFloat(solvesSlice[i], 64)
 				number += a
 				if i == 97 {
-					result = "Ao100 " + strconv.FormatFloat(number/98, 'f', 2, 64)
+					result = "Ao100  " + strconv.FormatFloat(number/98, 'f', 2, 64)
 					return result
 				}
 			}
 		} else {
 			result = "Ao100   -"
+		}
+	case 0:
+		length := len(solves)
+		if length > 1 {
+			slice1 := solves[0:length]
+			slices.Sort(slice1)
+			solvesSlice := slice1[1 : length-1]
+			for i := 0; i < length-2; i++ {
+				a, _ := strconv.ParseFloat(solvesSlice[i], 64)
+				number += a
+				if i == length-3 {
+					result = "AoAll  " + strconv.FormatFloat(number/(float64(length)-2), 'f', 2, 64)
+					return result
+				}
+			}
+		} else {
+			result = "AoAll   -"
 		}
 	}
 	return result
@@ -100,7 +117,7 @@ func startTimer(f bool) {
 					// t := strconv.FormatFloat(seconds, 'f', 1, 64)
 					// timer.SetText(t)
 					a++
-					seconds += 0.1
+					seconds += 0.01
 					if a == 10 {
 						t := strconv.FormatFloat(seconds, 'f', 1, 64)
 						timer.SetText(t)
