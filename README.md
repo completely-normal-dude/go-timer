@@ -1,5 +1,5 @@
 # GoTimer (Cube timer)
-A very lightweight 3x3x3 cube timer written in Go and built with Fyne GUI toolkit
+A very lightweight 3x3x3 cube timer written in Go using the Fyne GUI toolkit
 ### Current features
 - Generate scrambles 
 - Save times with their scramble
