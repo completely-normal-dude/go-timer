@@ -10,4 +10,3 @@ A very lightweight 3x3x3 cube timer written in Go and built with Fyne GUI toolki
 - Scrambles are generated using ![this](https://github.com/alexcoplan/scrambler) project 
 # Screenshots
 ![shot1](assets/shot1.png)
-![shot2](assets/shot2.png)
