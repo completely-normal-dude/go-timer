@@ -19,6 +19,7 @@ var (
 	ch                    = make(chan bool)
 	timesSaved            = true
 	currentScramble       string
+	solveSlice            = []int{}
 )
 
 func main() {

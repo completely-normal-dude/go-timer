@@ -10,11 +10,7 @@ func setkeys(win fyne.Window, tabs *container.AppTabs) {
 		if tabs.SelectedIndex() == 0 {
 			switch key.Name {
 			case fyne.KeySpace:
-				if !timerRunning {
-					startTimer(true)
-				} else {
-					startTimer(false)
-				}
+				startTimer(!timerRunning)
 			}
 		}
 	})

@@ -1,13 +1,14 @@
 package main
 
 import (
-	"time"
-
+	"fmt"
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/data/binding"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
+	"os"
+	"time"
 )
 
 func setTabs() *container.AppTabs {
@@ -61,11 +62,29 @@ func solvesTab() fyne.CanvasObject {
 		func(i widget.ListItemID, o fyne.CanvasObject) {
 			o.(*widget.Label).SetText(readScrambles()[i])
 		})
+	erase := widget.NewButton("Erase all", func() {
+		os.WriteFile(timesPath, []byte{}, os.FileMode(os.O_WRONLY))
+		os.WriteFile(scramblesPath, []byte{}, os.FileMode(os.O_WRONLY))
+		list1.Refresh()
+		list2.Refresh()
+		fmt.Println("Erased all times")
+	})
+	list1.OnSelected = func(id widget.ListItemID) {
+		list1.Refresh()
+		list1.UnselectAll()
+	}
+	list2.OnSelected = func(id widget.ListItemID) {
+		list2.Refresh()
+		list2.UnselectAll()
+	}
+	erasecont := container.NewHBox(erase)
 	cont1 := container.NewHBox(list1)
 	cont2 := container.NewStack(list2)
 	cont := container.NewHSplit(cont1, cont2)
 	cont.SetOffset(0.0)
-	return cont
+	defcont := container.NewVSplit(erasecont, cont)
+	defcont.SetOffset(0.0)
+	return defcont
 }
 
 // func statsTab() fyne.CanvasObject {
