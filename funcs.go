@@ -22,12 +22,12 @@ func getAverage(ao uint8, solves []string) (result string) {
 				a, _ := strconv.ParseFloat(solvesSlice[i], 64)
 				number += a
 				if i == 2 {
-					result = "Ao5  " + strconv.FormatFloat(number/3, 'f', 2, 64)
+					result = "Ao5   " + strconv.FormatFloat(number/3, 'f', 2, 64)
 					return result
 				}
 			}
 		} else {
-			result = "Ao5   -"
+			result = "Ao5          - "
 		}
 
 	case 12:
@@ -39,12 +39,12 @@ func getAverage(ao uint8, solves []string) (result string) {
 				a, _ := strconv.ParseFloat(solvesSlice[i], 64)
 				number += a
 				if i == 9 {
-					result = "Ao12  " + strconv.FormatFloat(number/10, 'f', 2, 64)
+					result = "Ao12   " + strconv.FormatFloat(number/10, 'f', 2, 64)
 					return result
 				}
 			}
 		} else {
-			result = "Ao12   -"
+			result = "Ao12          - "
 		}
 
 	case 50:
@@ -56,12 +56,12 @@ func getAverage(ao uint8, solves []string) (result string) {
 				a, _ := strconv.ParseFloat(solvesSlice[i], 64)
 				number += a
 				if i == 47 {
-					result = "Ao50  " + strconv.FormatFloat(number/48, 'f', 2, 64)
+					result = "Ao50   " + strconv.FormatFloat(number/48, 'f', 2, 64)
 					return result
 				}
 			}
 		} else {
-			result = "Ao50   -"
+			result = "Ao50          - "
 		}
 	case 100:
 		if len(solves) >= 100 {
@@ -72,12 +72,12 @@ func getAverage(ao uint8, solves []string) (result string) {
 				a, _ := strconv.ParseFloat(solvesSlice[i], 64)
 				number += a
 				if i == 97 {
-					result = "Ao100  " + strconv.FormatFloat(number/98, 'f', 2, 64)
+					result = "Ao100   " + strconv.FormatFloat(number/98, 'f', 2, 64)
 					return result
 				}
 			}
 		} else {
-			result = "Ao100   -"
+			result = "Ao100          - "
 		}
 	case 0:
 		length := len(solves)
@@ -89,12 +89,13 @@ func getAverage(ao uint8, solves []string) (result string) {
 				a, _ := strconv.ParseFloat(solvesSlice[i], 64)
 				number += a
 				if i == length-3 {
-					result = "AoAll  " + strconv.FormatFloat(number/(float64(length)-2), 'f', 2, 64)
+					a := fmt.Sprintf("Ao%d   ", length)
+					result = a + strconv.FormatFloat(number/(float64(length)-2), 'f', 2, 64)
 					return result
 				}
 			}
 		} else {
-			result = "AoAll   -"
+			result = ""
 		}
 	}
 	return result
