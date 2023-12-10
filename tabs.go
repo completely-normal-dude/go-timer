@@ -8,6 +8,7 @@ import (
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 	"os"
+	"slices"
 	"time"
 )
 
@@ -21,19 +22,16 @@ func setTabs() *container.AppTabs {
 }
 
 func timerTab() fyne.CanvasObject {
-	timer.TextStyle.Monospace = true
-	ao5 := binding.NewString()
-	ao12 := binding.NewString()
-	ao50 := binding.NewString()
-	ao100 := binding.NewString()
-	aoAll := binding.NewString()
+	ao5, ao12, ao50, ao100, aoAll := binding.NewString(), binding.NewString(), binding.NewString(), binding.NewString(), binding.NewString()
 	go func() {
 		for {
-			ao5.Set(getAverage(5, readTimes()))
-			ao12.Set(getAverage(12, readTimes()))
-			ao50.Set(getAverage(50, readTimes()))
-			ao100.Set(getAverage(100, readTimes()))
-			aoAll.Set(getAverage(0, readTimes()))
+			newSlice := readFile(0)
+			slices.Reverse(newSlice)
+			ao5.Set(getAverage(5, newSlice))
+			ao12.Set(getAverage(12, newSlice))
+			ao50.Set(getAverage(50, newSlice))
+			ao100.Set(getAverage(100, newSlice))
+			aoAll.Set(getAverage(0, newSlice))
 			time.Sleep(time.Millisecond * 500)
 		}
 	}()
@@ -44,27 +42,26 @@ func timerTab() fyne.CanvasObject {
 func solvesTab() fyne.CanvasObject {
 	list1 := widget.NewList(
 		func() int {
-			return len(readTimes())
+			return len(decodeFile())
 		},
 		func() fyne.CanvasObject {
 			return widget.NewLabel("Solves")
 		},
 		func(i widget.ListItemID, o fyne.CanvasObject) {
-			o.(*widget.Label).SetText(readTimes()[i])
+			o.(*widget.Label).SetText(decodeFile()[i][0])
 		})
 	list2 := widget.NewList(
 		func() int {
-			return len(readScrambles())
+			return len(decodeFile())
 		},
 		func() fyne.CanvasObject {
 			return widget.NewLabel("Solves")
 		},
 		func(i widget.ListItemID, o fyne.CanvasObject) {
-			o.(*widget.Label).SetText(readScrambles()[i])
+			o.(*widget.Label).SetText(decodeFile()[i][1])
 		})
 	erase := widget.NewButton("Erase all", func() {
-		os.WriteFile(timesPath, []byte{}, os.FileMode(os.O_WRONLY))
-		os.WriteFile(scramblesPath, []byte{}, os.FileMode(os.O_WRONLY))
+		os.Truncate(filePath, 0)
 		list1.Refresh()
 		list2.Refresh()
 		fmt.Println("Erased all times")

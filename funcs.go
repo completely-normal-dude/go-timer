@@ -1,12 +1,12 @@
 package main
 
 import (
+	"encoding/csv"
 	"fmt"
 	"github.com/robertkrimen/otto"
 	"os"
 	"slices"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -22,8 +22,8 @@ func getAverage(ao uint8, solves []string) (result string) {
 				a, _ := strconv.ParseFloat(solvesSlice[i], 64)
 				number += a
 				if i == 2 {
-					result = "Ao5   " + strconv.FormatFloat(number/3, 'f', 2, 64)
-					return result
+					result = "Ao5    " + strconv.FormatFloat(number/3, 'f', 2, 64)
+					return
 				}
 			}
 		} else {
@@ -39,8 +39,8 @@ func getAverage(ao uint8, solves []string) (result string) {
 				a, _ := strconv.ParseFloat(solvesSlice[i], 64)
 				number += a
 				if i == 9 {
-					result = "Ao12   " + strconv.FormatFloat(number/10, 'f', 2, 64)
-					return result
+					result = "Ao12    " + strconv.FormatFloat(number/10, 'f', 2, 64)
+					return
 				}
 			}
 		} else {
@@ -56,8 +56,8 @@ func getAverage(ao uint8, solves []string) (result string) {
 				a, _ := strconv.ParseFloat(solvesSlice[i], 64)
 				number += a
 				if i == 47 {
-					result = "Ao50   " + strconv.FormatFloat(number/48, 'f', 2, 64)
-					return result
+					result = "Ao50    " + strconv.FormatFloat(number/48, 'f', 2, 64)
+					return
 				}
 			}
 		} else {
@@ -72,8 +72,8 @@ func getAverage(ao uint8, solves []string) (result string) {
 				a, _ := strconv.ParseFloat(solvesSlice[i], 64)
 				number += a
 				if i == 97 {
-					result = "Ao100   " + strconv.FormatFloat(number/98, 'f', 2, 64)
-					return result
+					result = "Ao100    " + strconv.FormatFloat(number/98, 'f', 2, 64)
+					return
 				}
 			}
 		} else {
@@ -89,16 +89,16 @@ func getAverage(ao uint8, solves []string) (result string) {
 				a, _ := strconv.ParseFloat(solvesSlice[i], 64)
 				number += a
 				if i == length-3 {
-					a := fmt.Sprintf("Ao%d   ", length)
+					a := fmt.Sprintf("Ao%d    ", length)
 					result = a + strconv.FormatFloat(number/(float64(length)-2), 'f', 2, 64)
-					return result
+					return
 				}
 			}
 		} else {
 			result = ""
 		}
 	}
-	return result
+	return
 }
 
 func startTimer(f bool) {
@@ -121,7 +121,8 @@ func startTimer(f bool) {
 					seconds += 0.01
 					if a == 10 {
 						t := strconv.FormatFloat(seconds, 'f', 1, 64)
-						timer.SetText(t)
+						timer.Text = t
+						timer.Refresh()
 						a = 0
 					}
 				}
@@ -134,46 +135,41 @@ func startTimer(f bool) {
 		solve := seconds
 		seconds = 0
 		t := strconv.FormatFloat(solve, 'f', 2, 64)
-		timer.SetText(t)
-		data, _ := os.ReadFile(timesPath)
-		fmtdata := string(data)
+		timer.Text = t
+		timer.Refresh()
 		timesSaved = true
-		if fmtdata == "" {
-			if solve < 10 {
-				fmt.Fprintf(timesFile, "0%s", t)
-				fmt.Fprintf(scramblesFile, "%s", currentScramble)
-				fmt.Printf("Saved 0%s!\n", t)
-			} else {
-				fmt.Fprintf(timesFile, "%s", t)
-				fmt.Fprintf(scramblesFile, "%s", currentScramble)
-				fmt.Printf("Saved %s!\n", t)
+		writer := csv.NewWriter(fileOpen)
+		if solve < 10 {
+			a := fmt.Sprintf("0%s", t)
+			save := [][]string{
+				{a, currentScramble},
 			}
+			writer.WriteAll(save)
+			fmt.Printf("Saved 0%s!\n", t)
 		} else {
-			if solve < 10 {
-				fmt.Fprintf(timesFile, "\n0%s", t)
-				fmt.Fprintf(scramblesFile, "\n%s", currentScramble)
-				fmt.Printf("Saved 0%s!\n", t)
-			} else {
-				fmt.Fprintf(timesFile, "\n%s", t)
-				fmt.Fprintf(scramblesFile, "\n%s", currentScramble)
-				fmt.Printf("Saved %s!\n", t)
+			save := [][]string{
+				{t, currentScramble},
 			}
+			writer.WriteAll(save)
+			fmt.Printf("Saved %s!\n", t)
 		}
 	}
 }
-func readTimes() []string {
-	data, _ := os.ReadFile(timesPath)
-	fmtdata := string(data)
-	content := strings.Split(fmtdata, "\n")
-	slices.Reverse(content)
-	return content
+
+func readFile(Index uint8) (newSlice []string) {
+	f, _ := os.Open(filePath)
+	reader := csv.NewReader(f)
+	data, _ := reader.ReadAll()
+	for _, row := range data {
+		newSlice = append(newSlice, row[Index])
+	}
+	return
 }
-func readScrambles() []string {
-	data, _ := os.ReadFile(scramblesPath)
-	fmtdata := string(data)
-	content := strings.Split(fmtdata, "\n")
-	slices.Reverse(content)
-	return content
+func decodeFile() (data [][]string) {
+	f, _ := os.Open(filePath)
+	reader := csv.NewReader(f)
+	data, _ = reader.ReadAll()
+	return
 }
 
 func getScramble() string {
