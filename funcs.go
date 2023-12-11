@@ -22,7 +22,7 @@ func getAverage(ao uint8, solves []string) (result string) {
 				a, _ := strconv.ParseFloat(solvesSlice[i], 64)
 				number += a
 				if i == 2 {
-					result = "Ao5    " + strconv.FormatFloat(number/3, 'f', 2, 64)
+					result = "Ao5   " + strconv.FormatFloat(number/3, 'f', 2, 64)
 					return
 				}
 			}
@@ -89,7 +89,12 @@ func getAverage(ao uint8, solves []string) (result string) {
 				a, _ := strconv.ParseFloat(solvesSlice[i], 64)
 				number += a
 				if i == length-3 {
-					a := fmt.Sprintf("Ao%d    ", length)
+					if length < 10 {
+						a := fmt.Sprintf("Ao%d  ", length)
+						result = a + strconv.FormatFloat(number/(float64(length)-2), 'f', 2, 64)
+						return
+					}
+					a := fmt.Sprintf("Ao%d   ", length)
 					result = a + strconv.FormatFloat(number/(float64(length)-2), 'f', 2, 64)
 					return
 				}
@@ -171,6 +176,7 @@ func decodeFile() (data [][]string) {
 	f, _ := os.Open(filePath)
 	reader := csv.NewReader(f)
 	data, _ = reader.ReadAll()
+	slices.Reverse(data)
 	return
 }
 
