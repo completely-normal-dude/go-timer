@@ -175,6 +175,7 @@ func gen_scramble_cont() fyne.CanvasObject {
 			if timesSaved {
 				scr := getScramble()
 				scrambleText.Text = scr
+				scrambleText.Refresh()
 				currentScramble = scr
 				timesSaved = false
 			}

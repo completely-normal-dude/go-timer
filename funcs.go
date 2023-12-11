@@ -116,7 +116,8 @@ func startTimer(f bool) {
 				default:
 					// seconds += 0.1
 					// t := strconv.FormatFloat(seconds, 'f', 1, 64)
-					// timer.SetText(t)
+					// timer.Text=t
+					// timer.Refresh()
 					a++
 					seconds += 0.01
 					if a == 10 {
