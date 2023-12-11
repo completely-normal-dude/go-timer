@@ -79,13 +79,14 @@ func solvesTab(window fyne.Window) fyne.CanvasObject {
 			if choice {
 				var newSlice [][]string
 				newSlice = slices.Delete(decodeFile(), id, id+1)
-				if len(newSlice) == 0 {
+				if len(newSlice) == 0 || len(newSlice) == 1 {
 					os.Truncate(filePath, 0)
 					list1.Refresh()
 					list2.Refresh()
 					list1.UnselectAll()
 					return
 				}
+				slices.Reverse(newSlice)
 				os.Truncate(filePath, 0)
 				f, _ := os.OpenFile(filePath, os.O_WRONLY, 0644)
 				writer := csv.NewWriter(f)
@@ -103,7 +104,7 @@ func solvesTab(window fyne.Window) fyne.CanvasObject {
 			if choice {
 				var newSlice [][]string
 				newSlice = slices.Delete(decodeFile(), id, id+1)
-				if len(newSlice) == 0 {
+				if len(newSlice) == 0 || len(newSlice) == 1 {
 					os.Truncate(filePath, 0)
 					list2.Refresh()
 					list1.Refresh()
@@ -111,6 +112,7 @@ func solvesTab(window fyne.Window) fyne.CanvasObject {
 					return
 				}
 				os.Truncate(filePath, 0)
+				slices.Reverse(newSlice)
 				f, _ := os.OpenFile(filePath, os.O_WRONLY, 0644)
 				writer := csv.NewWriter(f)
 				writer.WriteAll(newSlice)
