@@ -138,7 +138,8 @@ func startTimer(f bool) {
 		timer.Text = t
 		timer.Refresh()
 		timesSaved = true
-		writer := csv.NewWriter(fileOpen)
+		f, _ := os.OpenFile(filePath, os.O_WRONLY|os.O_APPEND, 0644)
+		writer := csv.NewWriter(f)
 		if solve < 10 {
 			a := fmt.Sprintf("0%s", t)
 			save := [][]string{

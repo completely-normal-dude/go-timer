@@ -1,29 +1,23 @@
 package main
 
 import (
+	"errors"
 	"fmt"
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/dialog"
 	"os"
-	"runtime"
 )
 
-func handleErrors() {
+func handleErrors(app fyne.App, window fyne.Window) {
 	if errorConf != nil {
-		switch runtime.GOOS {
-		case "windows":
-			fmt.Println("No configuration folder found!")
-			fmt.Println("Export the %AppData% variable to save your times")
-		case "linux":
-			fmt.Println("No configuration folder found!")
-			fmt.Println("Export the $XDG_CONFIG_HOME variable to save your times")
-		case "darwin":
-			fmt.Println("No configuration folder found!")
-			fmt.Println("Export the $HOME variable to save your times")
-		}
+		fmt.Println("No configuration folder found!")
+		dialog.ShowInformation("No config folder", "No configuration folder found!", window)
 	}
-	if errorOpen != nil {
-		fmt.Println(filePath, "not found!\nCreating file...")
-		os.Create(filePath)
-		fileOpen, _ = os.OpenFile(filePath, os.O_APPEND|os.O_WRONLY, 0644)
+	if _, err := os.Stat(filePath); errors.Is(err, os.ErrNotExist) {
+		_, err := os.Create(filePath)
+		if err != nil {
+			fmt.Println(err)
+		}
 	} else {
 		fmt.Println("Found", filePath)
 	}
