@@ -171,11 +171,11 @@ func gen_avg_cont(num uint8, data binding.String) fyne.CanvasObject {
 }
 
 func gen_scramble_cont() fyne.CanvasObject {
-	currentScramble = getScramble()
+	currentScramble = Scramble(20)
 	go func() {
 		for range time.Tick(time.Millisecond * 500) {
 			if timesSaved {
-				scr := getScramble()
+				scr := Scramble(20)
 				scrambleText.Text = scr
 				scrambleText.Refresh()
 				currentScramble = scr

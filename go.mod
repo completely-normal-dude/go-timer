@@ -4,7 +4,6 @@ go 1.21.4
 
 require (
 	fyne.io/fyne/v2 v2.4.1
-	github.com/robertkrimen/otto v0.2.1
 )
 
 require (
@@ -33,7 +32,6 @@ require (
 	golang.org/x/net v0.14.0 // indirect
 	golang.org/x/sys v0.11.0 // indirect
 	golang.org/x/text v0.12.0 // indirect
-	gopkg.in/sourcemap.v1 v1.0.5 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	honnef.co/go/js/dom v0.0.0-20210725211120-f030747120f2 // indirect
 )

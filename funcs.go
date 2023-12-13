@@ -3,10 +3,11 @@ package main
 import (
 	"encoding/csv"
 	"fmt"
-	"github.com/robertkrimen/otto"
+	"math/rand"
 	"os"
 	"slices"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -180,65 +181,84 @@ func decodeFile() (data [][]string) {
 	return
 }
 
-func getScramble() string {
-	vm := otto.New()
-	vm.Run(`Array.prototype.choose = function() {
-		var index = Math.floor(Math.random() * this.length);
-		return this[index];
-};
+func Choose(slice []string) string {
+	rand.New(rand.NewSource(time.Now().UnixNano()))
+	index := rand.Intn(len(slice))
+	return slice[index]
+}
 
-function scramble(length) {
-		var planes = {x: ['L', 'R'], y: ['U', 'D'], z: ['F', 'B']};
-		var planeMap = {};
-		for (var plane in planes) {
-			var sides = planes[plane];
-			for (var i = 0; i < sides.length; i++) {
-				var side = sides[i];
-				planeMap[side] = plane;
-			}
+func Scramble(length int) string {
+	// Generate map of planes associated with each side
+	planes := map[string][]string{"x": {"L", "R"}, "y": {"U", "D"}, "z": {"F", "B"}}
+	planeMap := make(map[string]string)
+
+	for plane, sides := range planes {
+		for _, side := range sides {
+			planeMap[side] = plane
 		}
-
-		var sides = ['F', 'B', 'R', 'L', 'U', 'D'];
-		var modifiers = ['2', '\'', ''];
-
-		var weakBuffer = [], moves = [];
-		for (var i = 0; i < length; i++) {
-			var mod = modifiers.choose(), side;
-			if (weakBuffer.length == 0) {
-				side = sides.choose();
-			}
-			else if (weakBuffer.length == 1) {
-				var badSide = weakBuffer[0],
-				newSides = sides.slice(),
-				badIndex = newSides.indexOf(badSide);
-				newSides.splice(badIndex, 1);
-
-				side = newSides.choose();
-
-				if (planeMap[side] != planeMap[badSide]) {
-					weakBuffer = []; 
-				}
-			}
-			else {
-				var newSides = sides.slice();
-				for (var a = 0; a < weakBuffer.length; a++) {
-					var badSide = weakBuffer[a],
-					badIndex = newSides.indexOf(badSide);
-					newSides.splice(badIndex, 1);
-				}
-
-				side = newSides.choose();
-
-				weakBuffer = [];
-			}
-			moves.push(side + mod);
-			weakBuffer.push(side);
-		}
-		return moves.join(' ');
 	}
-var scramble = scramble(20);
-		`)
-	value, _ := vm.Get("scramble")
-	text, _ := value.ToString()
-	return text
+
+	sides := []string{"F", "B", "R", "L", "U", "D"}
+	modifiers := []string{"2", "'", ""}
+
+	// Create buffer of moved sides
+	// Once a plane is crossed, a move on those sides is then permissible again
+	var weakBuffer []string
+	var moves []string
+
+	for i := 0; i < length; i++ {
+		mod := Choose(modifiers)
+		var side string
+
+		if len(weakBuffer) == 0 {
+			side = Choose(sides)
+		} else if len(weakBuffer) == 1 {
+			badSide := weakBuffer[0]
+			newSides := make([]string, len(sides))
+			copy(newSides, sides)
+			badIndex := -1
+
+			for j, s := range newSides {
+				if s == badSide {
+					badIndex = j
+					break
+				}
+			}
+
+			newSides = append(newSides[:badIndex], newSides[badIndex+1:]...)
+
+			side = Choose(newSides)
+
+			if planeMap[side] != planeMap[badSide] {
+				weakBuffer = nil // planes have been crossed
+			}
+		} else {
+			// Double plane weakness
+			// Neither side in the weak buffer can be chosen
+
+			newSides := make([]string, len(sides))
+			copy(newSides, sides)
+
+			for _, badSide := range weakBuffer {
+				badIndex := -1
+
+				for j, s := range newSides {
+					if s == badSide {
+						badIndex = j
+						break
+					}
+				}
+
+				newSides = append(newSides[:badIndex], newSides[badIndex+1:]...)
+			}
+
+			side = Choose(newSides)
+			weakBuffer = nil
+		}
+
+		moves = append(moves, side+mod)
+		weakBuffer = append(weakBuffer, side)
+	}
+
+	return strings.Join(moves, " ")
 }
