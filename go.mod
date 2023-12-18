@@ -1,4 +1,4 @@
-module github.com/completely-normal-dude/test
+module github.com/completely-normal-dude/go-timer
 
 go 1.21.4
 

@@ -1,4 +1,4 @@
-//go:build linux
+//go:build windows
 
 package main
 
@@ -110,30 +110,20 @@ func getAverage(ao uint8, solves []string) (result string) {
 }
 
 func startTimer(f bool) {
-	var a uint8 = 0
 	switch f {
 	case true:
 		go func() {
 			timerRunning = true
 			fmt.Printf("Timer started... ")
-			for range time.Tick(10 * time.Millisecond) {
-				// for range time.Tick(100 * time.Millisecond) {
+			for range time.Tick(100 * time.Millisecond) {
 				select {
 				case <-ch:
 					return
 				default:
-					// seconds += 0.1
-					// t := strconv.FormatFloat(seconds, 'f', 1, 64)
-					// timer.Text=t
-					// timer.Refresh()
-					a++
-					seconds += 0.01
-					if a == 10 {
-						t := strconv.FormatFloat(seconds, 'f', 1, 64)
-						timer.Text = t
-						timer.Refresh()
-						a = 0
-					}
+					seconds += 0.1
+					t := strconv.FormatFloat(seconds, 'f', 1, 64)
+					timer.Text = t
+					timer.Refresh()
 				}
 			}
 		}()
